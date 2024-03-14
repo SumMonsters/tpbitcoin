@@ -68,7 +68,8 @@ public class Explorer {
 
     // TODO
     public String getLatestHash(){
-        return "";
+        String answer = request("q/latesthash");
+        return answer;
     }
 
 
@@ -79,7 +80,8 @@ public class Explorer {
      * @return byte array encoding the block
      */
     public byte[] getRawblockFromHash(String hash){
-        return null;
+        String answer = request("rawblock/"+hash+"?format=hex");
+        return hexStringToByte(answer);
     }
 
     // TODO
@@ -92,7 +94,7 @@ public class Explorer {
      */
 	
     public Block getBlockFromHash(NetworkParameters params, String hash){
-        return null;
+        return fromRawblockToBlock(params,getRawblockFromHash(hash));
     }
 
 

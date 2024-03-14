@@ -27,12 +27,20 @@ public class App {
     public static void main(String[] args) {
 
         //Q1  hashrate
-        double localHashrate = new HashRateEstimator(5000,5).estimate();
+       /* double localHashrate = new HashRateEstimator(5000,5).estimate();
+        System.out.println(localHashrate);*/
 
         // Q2: latest  block  from mainet (bitcoin blockchain) and its predecessor
         Context context   = new Context(new UnitTestParams()); // required  for working with bitcoinj
         Explorer explorer = new Explorer(); // for interacting with blockchain.info API
+        Block block = explorer.getBlockFromHash(context.getParams(),explorer.getLatestHash());
+        System.out.println("version : "+block.getVersion()+"\nprev Block Hash : "+block.getPrevBlockHash()+
+                "\nmerkle Root : "+block.getMerkleRoot()+"\ntime : "+block.getTime()+
+                "\ndifficulty Target : "+block.getDifficultyTarget()+"\nnonce : "+ block.getNonce());
         // Q3 Some TXs
+        for (int i = 0; i < 2; i++) {
+            System.out.println("\ntransaction "+i+1+" : "+block.getTransactions().get(i));
+        }
 
         // Q4 Mine a new block
         Miner miner = new Miner(context.getParams());
