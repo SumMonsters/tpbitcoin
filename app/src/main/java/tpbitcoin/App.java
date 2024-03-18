@@ -15,10 +15,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static org.bouncycastle.asn1.x509.ObjectDigestInfo.publicKey;
 
 public class App {
 
@@ -47,6 +50,21 @@ public class App {
         // empty list of tx since creating txs, even fake ones, requires some work
         ArrayList<Transaction> txs = new ArrayList<>();
         // TODO : mine a new block
+
+
+// Miner un nouveau bloc en utilisant le bloc précédent, une liste vide de transactions et une clé publique
+        byte[] a = new byte[1];
+        a[0] = (byte) publicKey;
+        Block newBlock = miner.mine(block, txs, a);
+
+// Vérifier si le bloc miné est valide
+        if (newBlock != null) {
+            // Le bloc est valide, vous pouvez traiter ici
+            System.out.println("Le nouveau bloc a été miné avec succès : " + newBlock);
+        } else {
+            // Le bloc n'est pas valide, gérer l'erreur ici
+            System.out.println("Erreur lors du minage du nouveau bloc.");
+        }
 
 
         System.out.println("\n");

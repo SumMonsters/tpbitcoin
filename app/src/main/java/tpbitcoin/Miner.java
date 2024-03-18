@@ -49,9 +49,35 @@ public class Miner {
      * @return
      */
     // TODO
-    public Block mine(Block lastBlock, List<Transaction> txs, byte[] pubKey){
+    public Block mine(Block lastBlock, List<Transaction> txs, byte[] pubKey) {
+        byte[] payloadBytes = new byte[0]; // Vous devez spécifier la charge utile en fonction de vos besoins
+        BitcoinSerializer serializer = new BitcoinSerializer(params, true);
+        Block block = new Block(params, payloadBytes, serializer, payloadBytes.length);
 
-        return null;
+        // Adding transactions to the block
+        for (Transaction tx : txs) {
+            block.addTransaction(tx);
+        }
+
+        // Generating coinbase transaction
+        String coinbaseAmount = "50"; // Adjust the coinbase amount as needed
+        Transaction coinbaseTx = generateCoinbase(params, pubKey, coinbaseAmount);
+        block.addTransaction(coinbaseTx);
+
+        // Setting the difficulty target
+        block.setDifficultyTarget(EASY_DIFFICULTY_TARGET); // Or you can use SOMEWHAT_HARDER_DIFFICULTY_TARGET
+
+        // Mining the block to find a valid nonce
+        block = setValidNonce(block);
+
+
+        try {
+            block.verifyHeader();
+            return block;
+        } catch (VerificationException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
 
